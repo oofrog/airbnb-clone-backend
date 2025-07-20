@@ -1,0 +1,11 @@
+{
+    "username": "passwordtest",
+    "email": "password@gmail.com",
+    "avatar": "",
+    "name": "passwordtest",
+    "is_host": false,
+    "gender": "male",
+    "language": "kr",
+    "currency": "won",
+    "password":"123456"
+}
