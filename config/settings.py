@@ -11,16 +11,21 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import environ
+
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-%3it_(e@bp4#yn3l8n9gaty1l4ubgn3bz##uc)62jqq6nvdz%y"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,6 +36,7 @@ ALLOWED_HOSTS = []
 # Application definition
 THIRD_PARTY_APPS = [
     "rest_framework",
+    "rest_framework.authtoken",
 ]
 CUSTOM_APPS = [
     "common.apps.CommonConfig",
@@ -141,7 +147,16 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Auth
 AUTH_USER_MODEL = "users.User"
 
-MEDIA_ROOT = "uploads" #실제 파일이 존재하는 폴더
-MEDIA_URL= "user-uploads/" #url상에서 접속하는 주소
+MEDIA_ROOT = "uploads"  # 실제 파일이 존재하는 폴더
+MEDIA_URL = "user-uploads/"  # url상에서 접속하는 주소
 
 PAGE_SIZE = 3
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "config.authentication.TrustMeBroAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+        "config.authentication.JWTAuthentication",
+    ]
+}
